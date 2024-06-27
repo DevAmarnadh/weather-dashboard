@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather Dashboard</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css">
+    <!-- Leaflet JavaScript -->
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        /* Add any additional styles here */
+        body {
+            margin: 0;
+            padding: 0;
+            overflow: hidden; /* Prevent scrolling if video covers whole page */
+            background: black; /* Fallback color */
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed; /* Fixed background */
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            position: relative; /* Ensure content is positioned above the video */
+            z-index: 1; /* Ensure content is above the video */
+            background-color: rgba(255, 255, 255, 0.7); /* Transparent white background */
+            border-radius: 10px; /* Rounded corners */
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.3); /* Drop shadow */
+        }
+        .search {
+            margin-bottom: 20px;
+        }
+        #map {
+            height: 400px;
+        }
+        .loading {
+            display: none;
+            /* Add loading styles if needed */
+        }
+        #video-background {
+            position: fixed;
+            right: 0;
+            bottom: 0;
+            min-width: 100%;
+            min-height: 100%;
+            width: auto;
+            height: auto;
+            z-index: -1; /* Place the video behind all other content */
+        }
+    </style>
+</head>
+<body>
+    <video autoplay loop muted id="video-background">
+        <source src="dev.mp4" type="video/mp4">
+        <!-- You can add more sources for different formats if needed -->
+        Your browser does not support the video tag.
+    </video>
+
+    <div class="container">
+        <h1>Weather Dashboard</h1>
+        <div class="search">
+            <input type="text" id="cityInput" placeholder="Enter city name">
+            <button id="searchBtn">Search</button>
+        </div>
+        <div id="weatherInfo" class="weather-info">
+            <!-- Weather data will be displayed here -->
+        </div>
+        <div id="map"></div> <!-- Map container -->
+    </div>
+
+    <div id="loading" class="loading">Loading...</div> <!-- Loading indicator -->
+
+    <script src="script.js"></script> <!-- JavaScript file -->
+</body>
+</html>

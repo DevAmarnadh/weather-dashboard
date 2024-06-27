@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather Forecast</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        #weatherInfo {
+            margin-top: 20px;
+        }
+        .forecast-info {
+            margin-top: 20px;
+        }
+        .forecast-day {
+            border: 1px solid #ccc;
+            padding: 10px;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div id="weatherInfo">
+        <input type="text" id="cityInput" placeholder="Enter city">
+        <button id="searchBtn">Search</button>
+    </div>
+    <div id="loading" style="display: none;">Loading...</div>
+    <canvas id="forecastChart" width="600" height="400"></canvas>
+
+    <script>
+        document.getElementById('searchBtn').addEventListener('click', () => {
+            const city = document.getElementById('cityInput').value.trim();
+            if (city) {
+                console.log(`Searching weather data for: ${city}`); // Log the city name
+                getWeatherData(city);
+                getForecastData(city);
+            }
+        });
+
+        async function getWeatherData(city) {
+            const apiKey = 'e583edc1310e4852b9142804242706'; // Replace with your actual API key
+            const url = `https://api.weatherapi.com/v1/current.json?key=${apiKey}&q=${city}`;
+            document.getElementById('loading').style.display = 'block';
+            const weatherInfo = document.getElementById('weatherInfo');
+            weatherInfo.style.display = 'none';
+
+            try {
+                const response = await fetch(url);
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    throw new Error(errorData.error.message);
+                }
+                const data = await response.json();
+                displayWeatherData(data);
+            } catch (error) {
+                displayError(error.message);
+            } finally {
+                document.getElementById('loading').style.display = 'none';
+            }
+        }
+
+        async function getForecastData(city) {
+            const apiKey = 'e583edc1310e4852b9142804242706'; // Replace with your actual API key
+            const url = `https://api.weatherapi.com/v1/forecast.json?key=${apiKey}&q=${city}&days=5`;
+            document.getElementById('loading').style.display = 'block';
+
+            try {
+                const response = await fetch(url);
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    throw new Error(errorData.error.message);
+                }
+                const data = await response.json();
+                displayForecastData(data.forecast.forecastday);
+            } catch (error) {
+                displayError(error.message);
+            } finally {
+                document.getElementById('loading').style.display = 'none';
+            }
+        }
+
+        function displayWeatherData(data) {
+            const weatherInfo = document.getElementById('weatherInfo');
+
+            weatherInfo.style.display = 'block';
+            weatherInfo.innerHTML = `
+                <h2>${data.location.name}</h2>
+                <p>Temperature: ${data.current.temp_c} °C</p>
+                <p>Humidity: ${data.current.humidity}%</p>
+                <p>Wind Speed: ${data.current.wind_kph} kph</p>
+                <p>Weather: ${data.current.condition.text}</p>
+            `;
+        }
+
+        function displayForecastData(forecastDays) {
+            const dates = [];
+            const avgTemps = [];
+
+            forecastDays.forEach(day => {
+                const date = new Date(day.date).toLocaleDateString();
+                dates.push(date);
+                avgTemps.push(day.day.avgtemp_c);
+            });
+
+            const ctx = document.getElementById('forecastChart').getContext('2d');
+
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: dates,
+                    datasets: [{
+                        label: 'Average Temperature (°C)',
+                        data: avgTemps,
+                        backgroundColor: 'rgba(54, 162, 235, 0.2)', // Blue color with transparency
+                        borderColor: 'rgba(54, 162, 235, 1)', // Blue color
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+        }
+
+        function displayError(message) {
+            const weatherInfo = document.getElementById('weatherInfo');
+            weatherInfo.style.display = 'block';
+            weatherInfo.innerHTML = `<p class="error">${message}</p>`;
+        }
+    </script>
+</body>
+</html>
