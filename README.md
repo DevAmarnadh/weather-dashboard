@@ -34,7 +34,11 @@ Weather Dashboard is a web application that allows users to search for weather i
 To fetch weather data, you need to sign up for a free API key at [WeatherAPI](https://www.weatherapi.com/) and replace `'YOUR_API_KEY'` in `script.js` with your actual API key.
 
 ## Screenshots
-Include screenshots of your Weather Dashboard here.
+
+
+https://github.com/DevAmarnadh/weather-dashboard/assets/170498981/4f4d4596-1bec-4b48-84ea-465fc72c8542
+
+
 
 ## Contributing
 Contributions are welcome! If you have any suggestions or improvements, please create a pull request.
