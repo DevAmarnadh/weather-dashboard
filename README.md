@@ -1,5 +1,3 @@
-Certainly! Below is a basic template for a README file that you can use for your Weather Dashboard project. It includes sections to describe the project, how to set it up, and other relevant information. Feel free to customize it further based on your specific project details:
-
 ```markdown
 # Weather Dashboard
 
